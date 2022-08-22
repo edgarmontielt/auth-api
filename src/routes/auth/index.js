@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const AuthService = require("../../services/authService");
+const AuthService = require("../../services/auth");
 const { tokenToCookieLocal } = require("../../helpers/auth/tokenToCookie");
 
 function auth(app) {
