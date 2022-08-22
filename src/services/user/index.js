@@ -6,6 +6,15 @@ class User {
 
     constructor() { }
 
+    async getAll() {
+        try {
+            const users = await prisma.user.findMany()
+            return users
+        } catch (error) {
+            return error
+        }
+    }
+
     async getOneByEmail(email) {
         try {
             const result = prisma.user.findUnique({
