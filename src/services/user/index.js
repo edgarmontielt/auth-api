@@ -1,10 +1,6 @@
-const { PrismaClient } = require('@prisma/client')
-
-const prisma = new PrismaClient()
+const prisma = require("../../libs/db");
 
 class User {
-
-    constructor() { }
 
     async getAll() {
         try {
@@ -31,7 +27,6 @@ class User {
     async create(data) {
         try {
             const user = await prisma.user.create({ data })
-
             return {
                 success: true,
                 user
