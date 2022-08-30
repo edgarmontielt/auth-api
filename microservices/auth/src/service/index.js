@@ -1,26 +1,28 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { jwtSecret } = require('../config')
 const { post } = require('../axios')
+const { jwtSecret } = require('../config')
 
 class Auth {
     async logIn(credentials) {
         try {
             const { email, password } = credentials
-            const user = await this.userService.getOneByEmail(email)
+            const result = (await post('/login', { email })).data
 
-            if (!user) return {
+            if (!result.user) return {
                 success: false,
                 messsage: 'User not found'
             }
 
-            const compare = await this.#compare(password, user.password)
+            const compare = await this.#compare(password, result.user.password)
 
-            if (!compare) return {
-                success: false,
-                message: ['Invalid credentials']
+            if (!compare) {
+                return {
+                    success: false,
+                    message: ['Invalid credentials']
+                }
             }
-            return this.#buildUserData({ user })
+            return this.#buildUserData(result.user)
         } catch (error) {
             return error
         }
@@ -33,8 +35,10 @@ class Auth {
             }
             const result = (await post('/register', data)).data
 
-            if (!result.success) return result
-            return this.#buildUserData(result)
+            if (!result.success) {
+                return result
+            }
+            return this.#buildUserData(result.user)
         } catch (error) {
             return {
                 success: false,
@@ -43,7 +47,7 @@ class Auth {
         }
     }
 
-    #buildUserData({ user }) {
+    #buildUserData(user) {
         const data = {
             id: user.id,
             name: user.name,
@@ -53,7 +57,7 @@ class Auth {
         const result = this.#getToken(data)
         return result
     }
-    
+
     async #encrypt(password) {
         const salt = await bcrypt.genSalt(10)
         return await bcrypt.hash(password, salt)
@@ -67,7 +71,11 @@ class Auth {
         const token = jwt.sign(user, jwtSecret, {
             expiresIn: '2d'
         })
-        return { success: true, user, token }
+        return {
+            success: true,
+            user,
+            token
+        }
     }
 }
 

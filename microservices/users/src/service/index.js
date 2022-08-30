@@ -5,29 +5,34 @@ class User {
     async getAll() {
         try {
             const users = await prisma.user.findMany();
-            console.log(users);
             return {
                 success: true,
                 users,
-            };
+            }
         } catch (error) {
-            return error;
+            return {
+                success: false,
+                error
+            }
         }
     }
 
     async getOneByEmail(email) {
         try {
-            const result = prisma.user.findUnique({
+            const result = await prisma.user.findUnique({
                 where: {
                     email,
                 },
-            });
+            })
             return {
                 success: true,
-                result,
+                user: result,
             };
         } catch (error) {
-            return error;
+            return {
+                success: false,
+                error
+            };
         }
     }
 

@@ -15,6 +15,10 @@ function users(app) {
         return res.status(result.success ? 200 : 400).json(result)
     })
 
+    router.post('/login', async (req, res) => {
+        const result = await userService.getOneByEmail(req.body.email)
+        return res.status(result.success ? 200 : 400).json(result)
+    })
 }
 
 module.exports = users
