@@ -8,12 +8,22 @@ function auth(app) {
 
     router.post('/register', async (req, res) => {
         const result = await authService.register(req.body)
-        return setLocalCookie(result, res)
+        if (result.success) {
+            return setLocalCookie(result, res)
+        }
+        return res.status(400).json(result)
     })
 
     router.post('/login', async (req, res) => {
         const result = await authService.logIn(req.body)
-        return setLocalCookie(result, res)
+        if (result.success) {
+            return setLocalCookie(result, res)
+        }
+        return res.status(400).json(result)
+    })
+
+    router.post('/validate', async (req, res) => {
+        
     })
 }
 

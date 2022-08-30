@@ -10,7 +10,7 @@ const setLocalCookie = (data, res) => {
             expires: buildDate(7),
             secure: false,
         })
-        .status(data.success ? 200 : 400)
+        .status(200)
         .json({
             success: data.success,
             user: data.user
