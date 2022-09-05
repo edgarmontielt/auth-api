@@ -15,6 +15,7 @@ function auth(app) {
     })
 
     router.post('/login', async (req, res) => {
+        console.log(req.body);
         const result = await authService.logIn(req.body)
         if (result.success) {
             return setLocalCookie(result, res)

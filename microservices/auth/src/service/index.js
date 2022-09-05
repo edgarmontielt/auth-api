@@ -6,8 +6,11 @@ const { jwtSecret } = require('../config')
 class Auth {
     async logIn(credentials) {
         try {
+            console.log(credentials);
             const { email, password } = credentials
             const result = (await post('/login', { email })).data
+
+            console.log(result);
 
             if (!result.user) return {
                 success: false,
