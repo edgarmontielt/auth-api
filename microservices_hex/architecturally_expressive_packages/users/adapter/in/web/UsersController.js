@@ -3,8 +3,10 @@ class UsersController {
         this.createUserUseCase = createUserUseCase
     }
 
-    createUser(req, res) {
-        const user = this.createUserUseCase.createUser(req.body)
+    async createUser(req, res) {
+        console.log(req.body);
+        const user = await this.createUserUseCase.createUser(req.body)
+        console.log(user);
         return res.json(user)
     }
 }
