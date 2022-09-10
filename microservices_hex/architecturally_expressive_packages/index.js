@@ -16,7 +16,9 @@ const client = new PrismaClient()
 const userService = new UserService(new UsersPersistenceAdapter(new UsersRepository(client.user)))
 const usersController = new UsersController(userService)
 const createUser = usersController.createUser.bind(usersController)
+const getAllUsers = usersController.getAllUsers.bind(usersController)
 
+app.get('/all', getAllUsers)
 app.post('/create', createUser)
 
 app.listen(port, () => {
